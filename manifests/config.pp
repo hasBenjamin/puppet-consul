@@ -13,6 +13,7 @@
 class consul::config(
   $config_hash,
   $purge = true,
+  $systemd_unit_file
 ) {
 
   if $consul::init_style {
@@ -38,7 +39,7 @@ class consul::config(
           mode    => '0644',
           owner   => 'root',
           group   => 'root',
-          content => template('consul/consul.systemd.erb'),
+          content => template($systemd_unit_file),
         }~>
         exec { 'consul-systemd-reload':
           command     => 'systemctl daemon-reload',
